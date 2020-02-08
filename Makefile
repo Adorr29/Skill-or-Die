@@ -1,18 +1,21 @@
 ##
-## EPITECH PROJECT, 2018
-## for_norme
+## EPITECH PROJECT, 2020
+## Skill or Die
 ## File description:
 ## Makefile
 ##
 
-NAME		=	a.out
+NAME		=	"Skill or Die"
 
 CC		=	g++
 
 SRCDIR		=	Src/
+SFPDIR		=	${SRCDIR}SFML++/
 INCDIR		=	Include/
 
 SRC		=	$(SRCDIR)Main.cpp \
+			$(SRCDIR)Entity.cpp \
+			$(SRCDIR)Player.cpp \
 
 OBJ		=	$(SRC:.cpp=.o)
 
