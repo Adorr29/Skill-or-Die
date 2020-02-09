@@ -10,12 +10,15 @@ NAME		=	"Skill or Die"
 CC		=	g++
 
 SRCDIR		=	Src/
-SFPDIR		=	${SRCDIR}SFML++/
+ETYDIR		=	${SRCDIR}Entity/
 INCDIR		=	Include/
 
 SRC		=	$(SRCDIR)Main.cpp \
-			$(SRCDIR)Entity.cpp \
-			$(SRCDIR)Player.cpp \
+			$(SRCDIR)PlayerControl.cpp \
+			$(SRCDIR)TimeFactor.cpp \
+			$(ETYDIR)Entity.cpp \
+			$(ETYDIR)Player.cpp \
+			$(ETYDIR)Enemy.cpp \
 
 OBJ		=	$(SRC:.cpp=.o)
 
@@ -25,6 +28,7 @@ CXXFLAGS	+=	-W -Wall -Wextra
 LDFLAGS		+=	-l sfml-system
 LDFLAGS		+=	-l sfml-window
 LDFLAGS		+=	-l sfml-graphics
+LDFLAGS		+=	-l sfml-audio
 
 %.o		:	%.cpp
 			@$(CC) -c -o $@ $< $(CXXFLAGS)

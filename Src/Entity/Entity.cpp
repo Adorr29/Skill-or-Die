@@ -5,14 +5,9 @@
 ** Entity.hpp
 */
 
-#include "Entity.hpp"
+#include "Entity/Entity.hpp"
+#include "TimeFactor.hpp"
 #include "SFML++/Vector2Algebra.hpp"
-
-Entity::Entity()
-    : position(900 / 2, 900 / 2),
-      speed(5)
-{
-}
 
 const Uint32 &Entity::getHp() const
 {
@@ -21,15 +16,12 @@ const Uint32 &Entity::getHp() const
 
 const Vector2f &Entity::getPosition() const
 {
-    return position;
+    return convexShape.getPosition();
 }
 
 void Entity::move(const Vector2f &direction)
 {
-    if (sqrLength(direction) > 0) {
-        position += direction * speed;
-        angle = atan2(direction.y, direction.x);
-    }
+    convexShape.move(direction * speed * TimeFactorInstance.get());
 }
 
 void Entity::takeDamage(const Uint32 &damage)
@@ -42,12 +34,19 @@ void Entity::takeDamage(const Uint32 &damage)
 
 void Entity::aff(RenderTarget &renderTarget) const
 {
+    renderTarget.draw(convexShape);
+
     // Tmp !!
-    RectangleShape rectangleShape(Vector2f(25, 25));
+    /*RectangleShape rectangleShape(Vector2f(25, 25));
 
     rectangleShape.setOrigin(rectangleShape.getSize() / (float)2);
     rectangleShape.setPosition(position);
     rectangleShape.setRotation(angle * 180.0 / M_PI);
     rectangleShape.setFillColor(Color(0, 110, 250));
-    renderTarget.draw(rectangleShape);
+    renderTarget.draw(rectangleShape);*/
+}
+
+void Entity::setPosition(const Vector2f &position)
+{
+    convexShape.setPosition(position);
 }

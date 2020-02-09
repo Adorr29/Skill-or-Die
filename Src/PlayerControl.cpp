@@ -2,19 +2,24 @@
 ** EPITECH PROJECT, 2020
 ** Skill or Die
 ** File description:
-** Player.hpp
+** PlayerControl.hpp
 */
 
 #include <iostream> // tmp
-#include "Player.hpp"
+#include "PlayerControl.hpp"
 #include "SFML++/Vector2Algebra.hpp"
 
-Player::Player(Entity &_entity)
+PlayerControl::PlayerControl(Entity &_entity)
     : entity(_entity)
 {
 }
 
-bool Player::parseEvent(const Event &event)
+const Entity &PlayerControl::getEntity() const
+{
+    return entity;
+}
+
+bool PlayerControl::parseEvent(const Event &event)
 {
     if (event.type == Event::JoystickMoved) {
         if (event.joystickMove.axis == Joystick::X)
@@ -30,7 +35,7 @@ bool Player::parseEvent(const Event &event)
     return true;
 }
 
-void Player::update()
+void PlayerControl::update()
 {
     entity.move(normalize(direction));
 }

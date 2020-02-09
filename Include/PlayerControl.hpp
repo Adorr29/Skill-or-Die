@@ -2,19 +2,20 @@
 ** EPITECH PROJECT, 2020
 ** Skill or Die
 ** File description:
-** Player.hpp
+** PlayerControl.hpp
 */
 
 #pragma once
 
 //#include <list>
 #include <SFML/Graphics.hpp> // ?
-#include "Entity.hpp"
+#include "Entity/Entity.hpp"
 
-class Player
+class PlayerControl
 {
 public:
-    Player(Entity &_entity);
+    PlayerControl(Entity &_entity);
+    const Entity &getEntity() const;
     bool parseEvent(const Event &event);
     void update();
 
