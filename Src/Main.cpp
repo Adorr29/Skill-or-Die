@@ -21,7 +21,9 @@ int main()
     srand(time(nullptr));
     const VideoMode desktopMode = VideoMode::getDesktopMode();
     const Vector2u desktopSize(desktopMode.width, desktopMode.height);
-    RenderWindow window(VideoMode(900, 900), "Skill or Die", Style::Close);
+    ContextSettings settings;
+    settings.antialiasingLevel = 8; // ?
+    RenderWindow window(VideoMode(900, 900), "Skill or Die", Style::Close, settings);
     list<EntityPtr> EntityList;
     EntityList.push_back(make_unique<Player>());
     PlayerControl playerControl(*EntityList.back());
