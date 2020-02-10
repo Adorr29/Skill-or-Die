@@ -13,6 +13,7 @@ class Enemy : public Entity
 {
 public:
     Enemy();
+    void move(const Vector2f &direction);
 
 private:
     //

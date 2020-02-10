@@ -11,14 +11,17 @@ CC		=	g++
 
 SRCDIR		=	Src/
 ETYDIR		=	${SRCDIR}Entity/
+EAIDIR		=	${SRCDIR}EnemyAI/
 INCDIR		=	Include/
 
 SRC		=	$(SRCDIR)Main.cpp \
+			$(SRCDIR)Control.cpp \
 			$(SRCDIR)PlayerControl.cpp \
 			$(SRCDIR)TimeFactor.cpp \
 			$(ETYDIR)Entity.cpp \
 			$(ETYDIR)Player.cpp \
 			$(ETYDIR)Enemy.cpp \
+			$(EAIDIR)EnemyAIFire.cpp \
 
 OBJ		=	$(SRC:.cpp=.o)
 

@@ -19,6 +19,11 @@ const Vector2f &Entity::getPosition() const
     return convexShape.getPosition();
 }
 
+void Entity::setPosition(const Vector2f &position)
+{
+    convexShape.setPosition(position);
+}
+
 void Entity::move(const Vector2f &direction)
 {
     convexShape.move(direction * speed * TimeFactorInstance.get());
@@ -44,9 +49,4 @@ void Entity::aff(RenderTarget &renderTarget) const
     rectangleShape.setRotation(angle * 180.0 / M_PI);
     rectangleShape.setFillColor(Color(0, 110, 250));
     renderTarget.draw(rectangleShape);*/
-}
-
-void Entity::setPosition(const Vector2f &position)
-{
-    convexShape.setPosition(position);
 }

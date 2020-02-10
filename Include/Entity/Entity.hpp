@@ -19,12 +19,10 @@ public:
     virtual ~Entity() = default;
     const Uint32 &getHp() const;
     const Vector2f &getPosition() const;
+    void setPosition(const Vector2f &position);
     virtual void move(const Vector2f &direction);
     void takeDamage(const Uint32 &damage);
     void aff(RenderTarget &renderTarget) const;
-
-protected:
-    void setPosition(const Vector2f &position);
 
 protected:
     Uint32 hp;

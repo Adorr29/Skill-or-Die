@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2020
 ** Skill or Die
 ** File description:
-** PlayerControl.hpp
+** EnemyAIFire.hpp
 */
 
 #pragma once
@@ -11,11 +11,10 @@
 #include <SFML/Graphics.hpp> // ?
 #include "Control.hpp"
 
-class PlayerControl : public Control
+class EnemyAIFire : public Control
 {
 public:
-    PlayerControl(Entity &_entity);
-    bool parseEvent(const Event &event);
+    EnemyAIFire(Entity &_entity, const Entity &target);
     void update();
 
 private:

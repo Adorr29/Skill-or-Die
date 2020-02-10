@@ -6,22 +6,22 @@
 */
 
 #include "Entity/Enemy.hpp"
-#include "SFML++/Vector2Algebra.hpp"
+#include "SFML++/Vector2Algebra.hpp" // tmp
 
 Enemy::Enemy()
 {
-    Vector2f position(rand() % 900, rand() % 900);
-
-    /*if (rand() % 2)
-        position.x = rand() % 2 ? -50 : 900 + 50;
-    else
-    position.y = rand() % 2 ? -50 : 900 + 50;*/
-    setPosition(position);
-    speed = 4;
-    convexShape.setPointCount(4);
-    convexShape.setPoint(0, Vector2f(-15, -15));
-    convexShape.setPoint(1, Vector2f(15, -15));
-    convexShape.setPoint(2, Vector2f(15, 15));
-    convexShape.setPoint(3, Vector2f(-15, 15));
+    // tmp
+    speed = 11;
+    convexShape.setPointCount(3);
+    convexShape.setPoint(0, Vector2f(-15, -10));
+    convexShape.setPoint(1, Vector2f(30, 0));
+    convexShape.setPoint(2, Vector2f(-15, 10));
     convexShape.setFillColor(Color(250, 50, 50));
+}
+
+void Enemy::move(const Vector2f &direction)
+{
+    Entity::move(direction);
+    if (sqrLength(direction) > 0)
+        convexShape.setRotation(atan2(direction.y, direction.x) * 180 / M_PI);
 }

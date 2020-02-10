@@ -9,12 +9,19 @@
 #include <list>
 #include <SFML/Graphics.hpp>
 #include "PlayerControl.hpp"
+#include "EnemyAI/EnemyAIFire.hpp"
 #include "Entity/Player.hpp"
 #include "Entity/Enemy.hpp"
 #include "TimeFactor.hpp"
 #include "SFML++/Vector2Algebra.hpp" // tmp
 
 using namespace sf;
+
+void spawn(list<EntityPtr> &entityList, list<unique_ptr<Control>> &enemyAIList, const Entity &player)
+{
+    entityList.push_back(make_unique<Enemy>());
+    enemyAIList.push_back(make_unique<EnemyAIFire>(*entityList.back(), player));
+}
 
 int main()
 {
@@ -24,11 +31,10 @@ int main()
     ContextSettings settings;
     settings.antialiasingLevel = 8; // ?
     RenderWindow window(VideoMode(900, 900), "Skill or Die", Style::Close, settings);
-    list<EntityPtr> EntityList;
-    EntityList.push_back(make_unique<Player>());
-    PlayerControl playerControl(*EntityList.back());
-    for (size_t i = 0; i < 4; i++)
-        EntityList.push_back(make_unique<Enemy>());
+    list<EntityPtr> entityList;
+    list<unique_ptr<Control>> enemyAIList;
+    entityList.push_back(make_unique<Player>());
+    PlayerControl playerControl(*entityList.back());
 
     window.setPosition(Vector2i(desktopSize - window.getSize()) / 2);
     window.setFramerateLimit(60);
@@ -41,12 +47,16 @@ int main()
 
             // GLOBAL stock event
         }
+        if (rand() % 60 == 0)
+            spawn(entityList, enemyAIList, playerControl.getEntity());
         playerControl.update();
+        for (unique_ptr<Control> &enemyAI : enemyAIList)
+            enemyAI->update();
         {
             const Entity &playerEntity = playerControl.getEntity();
             float minDist = -1;
 
-            for (const EntityPtr &entity : EntityList)
+            for (const EntityPtr &entity : entityList)
                 if (&(*entity) != &playerEntity) {
                     const float dist = length(playerEntity.getPosition() - entity->getPosition());
                     if (minDist < 0 || dist < minDist)
@@ -56,10 +66,10 @@ int main()
                 TimeFactorInstance.set((minDist - 15 * 2) / 120);
             else
                 TimeFactorInstance.set(1.0);
-            cerr << "TimeFactor : " << TimeFactorInstance.get() << endl;
+            //cerr << "TimeFactor : " << TimeFactorInstance.get() << endl;
         }
         window.clear();
-        for (const EntityPtr &entity : EntityList)
+        for (const EntityPtr &entity : entityList)
             entity->aff(window);
         window.display();
     }

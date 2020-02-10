@@ -10,13 +10,8 @@
 #include "SFML++/Vector2Algebra.hpp"
 
 PlayerControl::PlayerControl(Entity &_entity)
-    : entity(_entity)
+    : Control(_entity)
 {
-}
-
-const Entity &PlayerControl::getEntity() const
-{
-    return entity;
 }
 
 bool PlayerControl::parseEvent(const Event &event)
