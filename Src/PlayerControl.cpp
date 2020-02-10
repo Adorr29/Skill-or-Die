@@ -30,6 +30,26 @@ bool PlayerControl::parseEvent(const Event &event)
     else if (event.type == Event::JoystickButtonPressed) {
         // TODO
     }
+    else if (event.type == Event::KeyPressed) {
+        if (event.key.code == Keyboard::Up)
+            direction.y = -1;
+        else if (event.key.code == Keyboard::Down)
+            direction.y = 1;
+        else if (event.key.code == Keyboard::Left)
+            direction.x = -1;
+        else if (event.key.code == Keyboard::Right)
+            direction.x = 1;
+        else
+            return false;
+    }
+    else if (event.type == Event::KeyReleased) {
+        if (event.key.code == Keyboard::Up || event.key.code == Keyboard::Down)
+            direction.y = 0;
+        else if (event.key.code == Keyboard::Left || event.key.code == Keyboard::Right)
+            direction.x = 0;
+        else
+            return false;
+    }
     else
         return false;
     return true;
