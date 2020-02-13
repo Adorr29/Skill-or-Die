@@ -10,7 +10,7 @@
 
 Player::Player()
 {
-    setPosition(Vector2f(900 / 2 + 300, 900 / 2));
+    setPosition(Vector2f(900 / 2, 900 / 2));
     speed = 5;
     convexShape.setPointCount(4);
     convexShape.setPoint(0, Vector2f(-15, -15));

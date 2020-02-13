@@ -35,6 +35,10 @@ int main()
     list<unique_ptr<Control>> enemyAIList;
     entityList.push_back(make_unique<Player>());
     PlayerControl playerControl(*entityList.back());
+    float wait = -3; // tmp
+    float spawnDelay = 1.0; // tmp
+    Clock clock; // tmp
+    bool gameover = false;
 
     window.setPosition(Vector2i(desktopSize - window.getSize()) / 2);
     window.setFramerateLimit(60);
@@ -43,16 +47,27 @@ int main()
             if (event.type == Event::Closed)
                 window.close();
             else if (playerControl.parseEvent(event)) continue; // ??
-            //else if (enemy.parseEvent(event)) continue;
-
-            // GLOBAL stock event
         }
-        if (rand() % 60 == 0)
+        wait += clock.restart().asSeconds() * TimeFactorInstance.get();
+        if (wait >= spawnDelay) {
             spawn(entityList, enemyAIList, playerControl.getEntity());
-        playerControl.update();
-        for (unique_ptr<Control> &enemyAI : enemyAIList)
-            enemyAI->update();
-        {
+            wait -= spawnDelay;
+            spawnDelay -= 0.01 * spawnDelay;
+            cerr << "spawnDelay : " << spawnDelay << "s" << endl;
+        }
+        if (!gameover) {
+            playerControl.update();
+            for (unique_ptr<Control> &enemyAI : enemyAIList) {
+                enemyAI->update();
+                //if (playerControl.getEntity().collide(enemyAI->getEntity()))
+                if (enemyAI->getEntity().collide(playerControl.getEntity())) {
+                    cerr << "Collide !! " << endl;
+                    gameover = true;
+                    TimeFactorInstance.set(0.0);
+                }
+            }
+        }
+        if (!gameover) {
             const Entity &playerEntity = playerControl.getEntity();
             float minDist = -1;
 

@@ -23,6 +23,7 @@ public:
     virtual void move(const Vector2f &direction);
     void takeDamage(const Uint32 &damage);
     void aff(RenderTarget &renderTarget) const;
+    bool collide(const Entity &entity) const;
 
 protected:
     Uint32 hp;

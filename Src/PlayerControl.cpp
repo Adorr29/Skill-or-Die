@@ -25,7 +25,7 @@ bool PlayerControl::parseEvent(const Event &event)
     else if (event.type == Event::JoystickButtonPressed) {
         // TODO
     }
-    else if (event.type == Event::KeyPressed) {
+    /*else if (event.type == Event::KeyPressed) {
         if (event.key.code == Keyboard::Up)
             direction.y = -1;
         else if (event.key.code == Keyboard::Down)
@@ -44,7 +44,14 @@ bool PlayerControl::parseEvent(const Event &event)
             direction.x = 0;
         else
             return false;
-    }
+            }*/
+    /*else if (event.type == Event::MouseMoved) {
+        const Vector2f mousePosition(event.mouseMove.x, event.mouseMove.y);
+
+        direction = mousePosition - entity.getPosition();
+        if (length(direction) < 1)
+            direction = Vector2f();
+            }*/
     else
         return false;
     return true;

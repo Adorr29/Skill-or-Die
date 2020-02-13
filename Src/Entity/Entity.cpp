@@ -5,9 +5,11 @@
 ** Entity.hpp
 */
 
+#include <list> // ?
 #include "Entity/Entity.hpp"
 #include "TimeFactor.hpp"
 #include "SFML++/Vector2Algebra.hpp"
+#include "SFML++/ConvexShapeIntersects.hpp"
 
 const Uint32 &Entity::getHp() const
 {
@@ -49,4 +51,11 @@ void Entity::aff(RenderTarget &renderTarget) const
     rectangleShape.setRotation(angle * 180.0 / M_PI);
     rectangleShape.setFillColor(Color(0, 110, 250));
     renderTarget.draw(rectangleShape);*/
+}
+
+bool Entity::collide(const Entity &entity) const
+{
+    if (!convexShape.getGlobalBounds().intersects(entity.convexShape.getGlobalBounds()))
+        return false;
+    return intersects(convexShape, entity.convexShape);
 }

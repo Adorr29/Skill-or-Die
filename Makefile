@@ -5,13 +5,14 @@
 ## Makefile
 ##
 
-NAME		=	"Skill or Die"
+NAME		=	Skill\ or\ Die
 
 CC		=	g++
 
 SRCDIR		=	Src/
-ETYDIR		=	${SRCDIR}Entity/
-EAIDIR		=	${SRCDIR}EnemyAI/
+ETYDIR		=	$(SRCDIR)Entity/
+EAIDIR		=	$(SRCDIR)EnemyAI/
+SFPDIR		=	$(SRCDIR)SFML++/
 INCDIR		=	Include/
 
 SRC		=	$(SRCDIR)Main.cpp \
@@ -22,6 +23,7 @@ SRC		=	$(SRCDIR)Main.cpp \
 			$(ETYDIR)Player.cpp \
 			$(ETYDIR)Enemy.cpp \
 			$(EAIDIR)EnemyAIFire.cpp \
+			$(SFPDIR)ConvexShapeIntersects.cpp \
 
 OBJ		=	$(SRC:.cpp=.o)
 
