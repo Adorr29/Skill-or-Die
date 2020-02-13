@@ -11,6 +11,7 @@
 Player::Player()
 {
     setPosition(Vector2f(900 / 2, 900 / 2));
+    hp = 1;
     speed = 5;
     convexShape.setPointCount(4);
     convexShape.setPoint(0, Vector2f(-15, -15));

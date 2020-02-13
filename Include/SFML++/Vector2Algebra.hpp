@@ -23,10 +23,4 @@ Vector2<T> normalize(const Vector2<T> &vector);
 template<typename T>
 T angleBetween(const Vector2<T> &from, const Vector2<T> &to); // TODO replace be signedAgnle
 
-template<typename T>
-Vector2<T> &operator+(Vector2<T> &vector, Vector2<T> &vector2);
-
-template<typename T>
-Vector2<T> &operator-(Vector2<T> &vector, Vector2<T> &vector2);
-
 #include "../../Src/SFML++/Vector2Algebra.cpp"

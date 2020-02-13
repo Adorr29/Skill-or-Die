@@ -11,6 +11,7 @@
 Enemy::Enemy()
 {
     // tmp
+    hp = 2;
     speed = 11;
     convexShape.setPointCount(3);
     convexShape.setPoint(0, Vector2f(-15, -10));

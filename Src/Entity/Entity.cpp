@@ -21,6 +21,11 @@ const Vector2f &Entity::getPosition() const
     return convexShape.getPosition();
 }
 
+const float &Entity::getSpeed() const
+{
+    return speed;
+}
+
 void Entity::setPosition(const Vector2f &position)
 {
     convexShape.setPosition(position);
@@ -28,7 +33,10 @@ void Entity::setPosition(const Vector2f &position)
 
 void Entity::move(const Vector2f &direction)
 {
-    convexShape.move(direction * speed * TimeFactorInstance.get());
+    const Vector2f startPosition = convexShape.getPosition(); // tmp
+
+    convexShape.move(normalize(direction) * speed * TimeFactorInstance.get());
+    velocity = convexShape.getPosition() - startPosition;
 }
 
 void Entity::takeDamage(const Uint32 &damage)
@@ -37,6 +45,11 @@ void Entity::takeDamage(const Uint32 &damage)
         hp = 0;
     else
         hp -= damage;
+}
+
+void Entity::die()
+{
+    hp = 0;
 }
 
 void Entity::aff(RenderTarget &renderTarget) const

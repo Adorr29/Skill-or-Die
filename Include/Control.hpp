@@ -14,8 +14,11 @@ class Control
 public:
     Control(Entity &_entity);
     const Entity &getEntity() const;
+    bool toDestroy() const;
     virtual void update() = 0;
 
 protected:
     Entity &entity;
 };
+
+typedef shared_ptr<Control> ControlPtr;

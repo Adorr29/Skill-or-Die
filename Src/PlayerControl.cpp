@@ -7,7 +7,7 @@
 
 #include <iostream> // tmp
 #include "PlayerControl.hpp"
-#include "SFML++/Vector2Algebra.hpp"
+//#include "SFML++/Vector2Algebra.hpp"
 
 PlayerControl::PlayerControl(Entity &_entity)
     : Control(_entity)
@@ -59,5 +59,5 @@ bool PlayerControl::parseEvent(const Event &event)
 
 void PlayerControl::update()
 {
-    entity.move(normalize(direction));
+    entity.move(direction);
 }

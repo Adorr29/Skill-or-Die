@@ -17,10 +17,10 @@
 
 using namespace sf;
 
-void spawn(list<EntityPtr> &entityList, list<unique_ptr<Control>> &enemyAIList, const Entity &player)
+void spawn(list<EntityPtr> &entityList, list<shared_ptr<Control>> &enemyAIList, const Entity &player)
 {
-    entityList.push_back(make_unique<Enemy>());
-    enemyAIList.push_back(make_unique<EnemyAIFire>(*entityList.back(), player));
+    entityList.push_back(make_shared<Enemy>());
+    enemyAIList.push_back(make_shared<EnemyAIFire>(*entityList.back(), player));
 }
 
 int main()
@@ -32,8 +32,8 @@ int main()
     settings.antialiasingLevel = 8; // ?
     RenderWindow window(VideoMode(900, 900), "Skill or Die", Style::Close, settings);
     list<EntityPtr> entityList;
-    list<unique_ptr<Control>> enemyAIList;
-    entityList.push_back(make_unique<Player>());
+    list<ControlPtr> enemyAIList;
+    entityList.push_back(make_shared<Player>());
     PlayerControl playerControl(*entityList.back());
     float wait = -3; // tmp
     float spawnDelay = 1.0; // tmp
@@ -57,16 +57,19 @@ int main()
         }
         if (!gameover) {
             playerControl.update();
-            for (unique_ptr<Control> &enemyAI : enemyAIList) {
+            for (auto it = enemyAIList.begin(); it != enemyAIList.end(); it++) {
+                ControlPtr enemyAI = *it;
                 enemyAI->update();
-                //if (playerControl.getEntity().collide(enemyAI->getEntity()))
                 if (enemyAI->getEntity().collide(playerControl.getEntity())) {
                     cerr << "Collide !! " << endl;
                     gameover = true;
                     TimeFactorInstance.set(0.0);
                 }
+                if (enemyAI->toDestroy())
+                    it = enemyAIList.erase(it);
             }
         }
+        entityList.remove_if([&](const EntityPtr entity){return entity->getHp() == 0;});
         if (!gameover) {
             const Entity &playerEntity = playerControl.getEntity();
             float minDist = -1;

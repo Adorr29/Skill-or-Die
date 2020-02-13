@@ -14,6 +14,11 @@ Control::Control(Entity &_entity)
 {
 }
 
+bool Control::toDestroy() const
+{
+    return entity.getHp() == 0;
+}
+
 const Entity &Control::getEntity() const
 {
     return entity;
