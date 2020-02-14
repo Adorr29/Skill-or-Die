@@ -8,6 +8,9 @@
 #include <iostream> // tmp
 #include "PlayerControl.hpp"
 //#include "SFML++/Vector2Algebra.hpp"
+#include "TimeFactor.hpp" // tmp
+
+bool ttttmp = false; // tmp
 
 PlayerControl::PlayerControl(Entity &_entity)
     : Control(_entity)
@@ -18,12 +21,16 @@ bool PlayerControl::parseEvent(const Event &event)
 {
     if (event.type == Event::JoystickMoved) {
         if (event.joystickMove.axis == Joystick::X)
-            direction.x = event.joystickMove.position;
+            direction.x = event.joystickMove.position / 100.0;
         else if (event.joystickMove.axis == Joystick::Y)
-            direction.y = event.joystickMove.position;
+            direction.y = event.joystickMove.position / 100.0;
     }
     else if (event.type == Event::JoystickButtonPressed) {
         // TODO
+        ttttmp = true;
+    }
+    else if (event.type == Event::JoystickButtonReleased) {
+        ttttmp = false;
     }
     /*else if (event.type == Event::KeyPressed) {
         if (event.key.code == Keyboard::Up)
@@ -59,5 +66,7 @@ bool PlayerControl::parseEvent(const Event &event)
 
 void PlayerControl::update()
 {
+    if (ttttmp && TimeFactorInstance.get() > 0.1)
+        TimeFactorInstance.set(0.1);
     entity.move(direction);
 }

@@ -33,10 +33,13 @@ void Entity::setPosition(const Vector2f &position)
 
 void Entity::move(const Vector2f &direction)
 {
-    const Vector2f startPosition = convexShape.getPosition(); // tmp
+    Vector2f offset = direction;
 
-    convexShape.move(normalize(direction) * speed * TimeFactorInstance.get());
-    velocity = convexShape.getPosition() - startPosition;
+    if (sqrLength(direction) > 1)
+        offset = normalize(direction);
+    offset *= speed;
+    convexShape.move(offset * TimeFactorInstance.get());
+    velocity = offset;
 }
 
 void Entity::takeDamage(const Uint32 &damage)

@@ -53,23 +53,8 @@ int main()
             spawn(entityList, enemyAIList, playerControl.getEntity());
             wait -= spawnDelay;
             spawnDelay -= 0.01 * spawnDelay;
-            cerr << "spawnDelay : " << spawnDelay << "s" << endl;
+            cerr << "spawnDelay : " << spawnDelay << "s" << endl; // tmp
         }
-        if (!gameover) {
-            playerControl.update();
-            for (auto it = enemyAIList.begin(); it != enemyAIList.end(); it++) {
-                ControlPtr enemyAI = *it;
-                enemyAI->update();
-                if (enemyAI->getEntity().collide(playerControl.getEntity())) {
-                    cerr << "Collide !! " << endl;
-                    gameover = true;
-                    TimeFactorInstance.set(0.0);
-                }
-                if (enemyAI->toDestroy())
-                    it = enemyAIList.erase(it);
-            }
-        }
-        entityList.remove_if([&](const EntityPtr entity){return entity->getHp() == 0;});
         if (!gameover) {
             const Entity &playerEntity = playerControl.getEntity();
             float minDist = -1;
@@ -86,6 +71,22 @@ int main()
                 TimeFactorInstance.set(1.0);
             //cerr << "TimeFactor : " << TimeFactorInstance.get() << endl;
         }
+        if (!gameover) {
+            playerControl.update();
+            for (auto it = enemyAIList.begin(); it != enemyAIList.end(); it++) {
+                ControlPtr enemyAI = *it;
+
+                enemyAI->update();
+                if (enemyAI->getEntity().collide(playerControl.getEntity())) {
+                    cerr << "Collide !! " << endl;
+                    gameover = true;
+                    TimeFactorInstance.set(0.0);
+                }
+                if (enemyAI->toDestroy())
+                    it = enemyAIList.erase(it);
+            }
+        }
+        entityList.remove_if([&](const EntityPtr entity){return entity->getHp() == 0;});
         window.clear();
         for (const EntityPtr &entity : entityList)
             entity->aff(window);
