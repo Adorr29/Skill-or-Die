@@ -5,7 +5,7 @@
 ** Main.cpp
 */
 
-#include <iostream> // ?
+/*#include <iostream> // ?
 #include <list>
 #include <SFML/Graphics.hpp>
 #include "PlayerControl.hpp"
@@ -16,6 +16,8 @@
 #include "SFML++/Vector2Algebra.hpp" // tmp
 
 using namespace sf;
+
+#define Framerate 60
 
 void spawn(list<EntityPtr> &entityList, list<shared_ptr<Control>> &enemyAIList, const Entity &player)
 {
@@ -41,12 +43,32 @@ int main()
     bool gameover = false;
 
     window.setPosition(Vector2i(desktopSize - window.getSize()) / 2);
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(Framerate);
     while (window.isOpen()) {
         for (Event event; window.pollEvent(event);) {
             if (event.type == Event::Closed)
                 window.close();
             else if (playerControl.parseEvent(event)) continue; // ??
+        }
+        if (!gameover) {
+            const Entity &playerEntity = playerControl.getEntity();
+            float minDist = -1;
+            const float t = Framerate / 8.0;
+            const Vector2f p1 = playerEntity.getPosition() + playerEntity.getVelocity() * t;
+
+            for (const EntityPtr &entity : entityList)
+                if (&(*entity) != &playerEntity) {
+                    const Vector2f p2 = entity->getPosition() + entity->getVelocity() * t;
+                    const float dist = length(p2 - p1);
+
+                    if (minDist < 0 || dist < minDist)
+                        minDist = dist;
+                }
+            if (minDist > 0 && minDist < 120)
+                TimeFactorInstance.set(minDist / 120.0);
+            else
+                TimeFactorInstance.set(1.0);
+            //cerr << "TimeFactor : " << TimeFactorInstance.get() << endl;
         }
         wait += clock.restart().asSeconds() * TimeFactorInstance.get();
         if (wait >= spawnDelay) {
@@ -55,22 +77,7 @@ int main()
             spawnDelay -= 0.01 * spawnDelay;
             cerr << "spawnDelay : " << spawnDelay << "s" << endl; // tmp
         }
-        if (!gameover) {
-            const Entity &playerEntity = playerControl.getEntity();
-            float minDist = -1;
 
-            for (const EntityPtr &entity : entityList)
-                if (&(*entity) != &playerEntity) {
-                    const float dist = length(playerEntity.getPosition() - entity->getPosition());
-                    if (minDist < 0 || dist < minDist)
-                        minDist = dist;
-                }
-            if (minDist > 0 && minDist - 15 * 2 < 120)
-                TimeFactorInstance.set((minDist - 15 * 2) / 120);
-            else
-                TimeFactorInstance.set(1.0);
-            //cerr << "TimeFactor : " << TimeFactorInstance.get() << endl;
-        }
         if (!gameover) {
             playerControl.update();
             for (auto it = enemyAIList.begin(); it != enemyAIList.end(); it++) {
@@ -88,9 +95,26 @@ int main()
         }
         entityList.remove_if([&](const EntityPtr entity){return entity->getHp() == 0;});
         window.clear();
-        for (const EntityPtr &entity : entityList)
+        for (EntityPtr &entity : entityList) {
+            entity->update();
             entity->aff(window);
+        }
         window.display();
     }
+    return 0;
+    }*/
+
+
+#include <iostream> // ?
+#include "Game.hpp"
+
+using namespace sf;
+
+int main()
+{
+    srand(time(nullptr));
+    Game game;
+
+    game.run();
     return 0;
 }

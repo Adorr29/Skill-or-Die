@@ -16,9 +16,11 @@ SFPDIR		=	$(SRCDIR)SFML++/
 INCDIR		=	Include/
 
 SRC		=	$(SRCDIR)Main.cpp \
+			$(SRCDIR)Game.cpp \
 			$(SRCDIR)Control.cpp \
 			$(SRCDIR)PlayerControl.cpp \
 			$(SRCDIR)TimeFactor.cpp \
+			$(SRCDIR)Error.cpp \
 			$(ETYDIR)Entity.cpp \
 			$(ETYDIR)Player.cpp \
 			$(ETYDIR)Enemy.cpp \

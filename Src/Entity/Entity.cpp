@@ -6,10 +6,12 @@
 */
 
 #include <list> // ?
+#include <fstream>
 #include "Entity/Entity.hpp"
 #include "TimeFactor.hpp"
 #include "SFML++/Vector2Algebra.hpp"
 #include "SFML++/ConvexShapeIntersects.hpp"
+#include "Error.hpp"
 
 const Uint32 &Entity::getHp() const
 {
@@ -19,6 +21,11 @@ const Uint32 &Entity::getHp() const
 const Vector2f &Entity::getPosition() const
 {
     return convexShape.getPosition();
+}
+
+const Vector2f &Entity::getVelocity() const
+{
+    return velocity;
 }
 
 const float &Entity::getSpeed() const
@@ -31,21 +38,15 @@ void Entity::setPosition(const Vector2f &position)
     convexShape.setPosition(position);
 }
 
-void Entity::move(const Vector2f &direction)
+void Entity::setDirection(const Vector2f &_direction)
 {
-    Vector2f offset = direction;
-
-    if (sqrLength(direction) > 1)
-        offset = normalize(direction);
-    offset *= speed;
-    convexShape.move(offset * TimeFactorInstance.get());
-    velocity = offset;
+    direction = _direction;
 }
 
 void Entity::takeDamage(const Uint32 &damage)
 {
     if (damage >= hp)
-        hp = 0;
+        die();
     else
         hp -= damage;
 }
@@ -55,23 +56,66 @@ void Entity::die()
     hp = 0;
 }
 
+void Entity::update()
+{
+    move();
+}
+
 void Entity::aff(RenderTarget &renderTarget) const
 {
     renderTarget.draw(convexShape);
-
-    // Tmp !!
-    /*RectangleShape rectangleShape(Vector2f(25, 25));
-
-    rectangleShape.setOrigin(rectangleShape.getSize() / (float)2);
-    rectangleShape.setPosition(position);
-    rectangleShape.setRotation(angle * 180.0 / M_PI);
-    rectangleShape.setFillColor(Color(0, 110, 250));
-    renderTarget.draw(rectangleShape);*/
 }
 
-bool Entity::collide(const Entity &entity) const
+bool Entity::collide(const Entity &_entity) const
 {
+    const Entity &entity = static_cast<const Entity&>(_entity);
+
     if (!convexShape.getGlobalBounds().intersects(entity.convexShape.getGlobalBounds()))
         return false;
     return intersects(convexShape, entity.convexShape);
+}
+
+void Entity::loadFromFile(const string &fileName)
+{
+    ifstream file(fileName, ifstream::binary);
+    size_t pointCount;
+    Vector2f point;
+
+    if (!file)
+        throw ERROR(fileName + " can not be open");
+    if (!file.read((char*)&pointCount, sizeof(size_t)))
+        throw ERROR("Read pointCount failed");
+    convexShape.setPointCount(pointCount);
+    for (size_t i = 0; i < convexShape.getPointCount(); i++) {
+        if (!file.read((char*)&point, sizeof(Vector2f)))
+            throw ERROR("Read point failed");
+        convexShape.setPoint(i, point);
+    }
+}
+
+void Entity::saveToFile(const string &fileName) const
+{
+    ofstream file(fileName, ifstream::binary | ifstream::trunc);
+    size_t pointCount;
+    Vector2f point;
+
+    if (!file)
+        throw ERROR(fileName + " can not be open");
+    pointCount = convexShape.getPointCount();
+    if (!file.write((char*)&pointCount, sizeof(size_t)))
+        throw ERROR("Write pointCount failed");
+    for (size_t i = 0; i < convexShape.getPointCount(); i++) {
+        point = convexShape.getPoint(i);
+        if (!file.write((char*)&point, sizeof(Vector2f)))
+            throw ERROR("Write point failed");
+    }
+}
+
+void Entity::move()
+{
+    velocity = direction;
+    if (sqrLength(direction) > 1)
+        velocity = normalize(direction);
+    velocity *= speed;
+    convexShape.move(velocity * TimeFactorInstance.get());
 }

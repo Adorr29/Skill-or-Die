@@ -14,12 +14,12 @@
 class EnemyAIFire : public Control
 {
 public:
-    EnemyAIFire(Entity &_entity, const Entity &target);
+    EnemyAIFire(Game &_game, Entity &_entity, const Entity &target);
     void update();
 
 private:
     //
 
 private:
-    Vector2f direction;
+    //
 };

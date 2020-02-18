@@ -7,17 +7,21 @@
 
 #pragma once
 
-#include "Entity/Entity.hpp"
+#include "IControl.hpp"
+//#include "Entity/Entity.hpp" // ?
+#include "Game.hpp" // ?
 
-class Control
+class Control : public IControl
 {
 public:
-    Control(Entity &_entity);
+    Control(Game &_game, Entity &_entity);
+    virtual ~Control() = default;
     const Entity &getEntity() const;
     bool toDestroy() const;
     virtual void update() = 0;
 
 protected:
+    Game &game;
     Entity &entity;
 };
 

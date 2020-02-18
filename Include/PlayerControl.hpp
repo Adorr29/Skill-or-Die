@@ -14,7 +14,7 @@
 class PlayerControl : public Control
 {
 public:
-    PlayerControl(Entity &_entity);
+    PlayerControl(Game &_game, Entity &_entity);
     bool parseEvent(const Event &event);
     void update();
 

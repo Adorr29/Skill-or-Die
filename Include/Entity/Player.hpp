@@ -13,8 +13,10 @@ class Player : public Entity
 {
 public:
     Player();
-    void move(const Vector2f &direction);
+    void update();
 
 private:
     //
 };
+
+typedef shared_ptr<Player> PlayerPtr;

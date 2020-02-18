@@ -9,8 +9,9 @@
 #include "Control.hpp"
 #include "SFML++/Vector2Algebra.hpp"
 
-Control::Control(Entity &_entity)
-    : entity(_entity)
+Control::Control(Game &_game, Entity &_entity)
+    : game(_game),
+      entity(_entity)
 {
 }
 
