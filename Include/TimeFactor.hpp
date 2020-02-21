@@ -16,7 +16,6 @@ using namespace sf; // tmp
 class TimeFactor
 {
 public:
-    static TimeFactor &getInstance();
     static const float &get();
     static void set(const float &_value);
 
