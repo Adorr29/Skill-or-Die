@@ -13,15 +13,17 @@
 using namespace std;
 using namespace sf; // tmp
 
-#define TimeFactorInstance TimeFactor::getInstance()
-
 class TimeFactor
 {
 public:
-    TimeFactor();
     static TimeFactor &getInstance();
-    const float &get() const;
-    void set(const float &_value);
+    static const float &get();
+    static void set(const float &_value);
+
+private:
+    TimeFactor();
+    ~TimeFactor() = default;
+    TimeFactor(const TimeFactor &timeFactor) = delete;
 
 private:
     static TimeFactor instance;
