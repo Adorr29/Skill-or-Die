@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2020
 ** Skill or Die
 ** File description:
-** Entity.hpp
+** Entity.cpp
 */
 
 #include <list> // ?
@@ -117,5 +117,5 @@ void Entity::move()
     if (sqrLength(direction) > 1)
         velocity = normalize(direction);
     velocity *= speed;
-    convexShape.move(velocity * TimeFactorInstance.get());
+    convexShape.move(velocity * TimeFactor::get());
 }

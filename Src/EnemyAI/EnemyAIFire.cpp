@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2020
 ** Skill or Die
 ** File description:
-** EnemyAIFire.hpp
+** EnemyAIFire.cpp
 */
 
 //#include <iostream> // ?

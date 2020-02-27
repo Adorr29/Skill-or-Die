@@ -2,12 +2,13 @@
 ** EPITECH PROJECT, 2020
 ** Skill or Die
 ** File description:
-** PlayerControl.hpp
+** PlayerControl.cpp
 */
 
 #include <iostream> // tmp
 #include "PlayerControl.hpp"
 //#include "SFML++/Vector2Algebra.hpp"
+#include "Input.hpp" // tmp
 
 PlayerControl::PlayerControl(Game &_game, Entity &_entity)
     : Control(_game, _entity)
@@ -62,5 +63,11 @@ bool PlayerControl::parseEvent(const Event &event)
 
 void PlayerControl::update()
 {
-    entity.setDirection(direction); // ??
+    direction.x = Input::getJoystickPosition(0, Joystick::X);
+    direction.y = Input::getJoystickPosition(0, Joystick::Y);
+    if (Input::getJoystickButtonDown(0, 0)) // tmp
+        cout << "Press" << endl;
+    else if (Input::getJoystickButtonUp(0, 0)) // tmp
+        cout << "Release" << endl;
+    entity.setDirection(direction);
 }

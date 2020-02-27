@@ -7,11 +7,11 @@
 
 #pragma once
 
-#include "IControl.hpp"
-//#include "Entity/Entity.hpp" // ?
+#include <memory>
+#include "Entity/Entity.hpp" // ?
 #include "Game.hpp" // ?
 
-class Control : public IControl
+class Control
 {
 public:
     Control(Game &_game, Entity &_entity);
@@ -24,5 +24,3 @@ protected:
     Game &game;
     Entity &entity;
 };
-
-typedef shared_ptr<Control> ControlPtr;

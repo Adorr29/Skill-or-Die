@@ -9,11 +9,6 @@
 
 TimeFactor TimeFactor::instance;
 
-TimeFactor &TimeFactor::getInstance()
-{
-    return instance;
-}
-
 const float &TimeFactor::get()
 {
     return instance.value;

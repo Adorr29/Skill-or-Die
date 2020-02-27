@@ -20,6 +20,7 @@ SRC		=	$(SRCDIR)Main.cpp \
 			$(SRCDIR)Control.cpp \
 			$(SRCDIR)PlayerControl.cpp \
 			$(SRCDIR)TimeFactor.cpp \
+			$(SRCDIR)Input.cpp \
 			$(SRCDIR)Error.cpp \
 			$(ETYDIR)Entity.cpp \
 			$(ETYDIR)Player.cpp \

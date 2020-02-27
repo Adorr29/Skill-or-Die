@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2020
 ** Skill or Die
 ** File description:
-** Player.hpp
+** Player.cpp
 */
 
 #include "Entity/Player.hpp"

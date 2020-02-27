@@ -15,7 +15,7 @@ class PlayerControl : public Control
 {
 public:
     PlayerControl(Game &_game, Entity &_entity);
-    bool parseEvent(const Event &event);
+    bool parseEvent(const Event &event); // TODO supr
     void update();
 
 private:
@@ -24,3 +24,5 @@ private:
 private:
     Vector2f direction;
 };
+
+typedef shared_ptr<PlayerControl> PlayerControlPtr;

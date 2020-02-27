@@ -2,11 +2,12 @@
 ** EPITECH PROJECT, 2020
 ** Skill or Die
 ** File description:
-** Game.hpp
+** Game.cpp
 */
 
 #include <iostream> // tmp
 #include "Game.hpp"
+#include "Input.hpp" // move in hpp ?
 #include "TimeFactor.hpp" // move in hpp ?
 #include "Entity/Player.hpp" // tmp
 #include "Entity/Enemy.hpp" // tmp
@@ -29,6 +30,11 @@ Game::Game()
     PlayerPtr playerEntity = make_shared<Player>();
     player = make_shared<PlayerControl>(*this, *playerEntity);
     addEntity(playerEntity);
+    controlList.push_back(player);
+
+    // tmp
+    wait = -3.0;
+    spawnDelay = 1.0;
 }
 
 const RenderWindow &Game::getWindow() const
@@ -41,17 +47,22 @@ void Game::addEntity(EntityPtr entity)
     entityList.push_back(entity);
 }
 
+void Game::addControl(ControlPtr control)
+{
+    controlList.push_back(control);
+}
+
 void Game::run()
 {
     while (window.isOpen()) {
-        for (Event event; window.pollEvent(event);) {
+        Input::update(window);
+        /*for (Event event; window.pollEvent(event);) {
             if (event.type == Event::Closed)
                 window.close();
-            else if (static_pointer_cast<PlayerControl>(player)->parseEvent(event))
+            else if (player->parseEvent(event))
                 continue;
-        }
-        if (rand() % 30 == 0) // tmp
-            spawn();
+                }*/
+        spawn(); // tmp
         update();
         if (playerCollide())
             cerr << "Collide !! " << endl;
@@ -67,8 +78,7 @@ void Game::run()
 
 void Game::update()
 {
-    player->update();
-    for (IControlPtr &control : controlList)
+    for (ControlPtr &control : controlList)
         control->update();
     updateTimeFactor();
 }
@@ -90,9 +100,9 @@ void Game::updateTimeFactor()
                 minDistance = distance;
         }
     if (minDistance > 0 && minDistance < maxDistance)
-        TimeFactorInstance.set(minDistance / maxDistance);
+        TimeFactor::set(minDistance / maxDistance);
     else
-        TimeFactorInstance.set(1.0);
+        TimeFactor::set(1.0);
 }
 
 bool Game::playerCollide()
@@ -107,16 +117,21 @@ bool Game::playerCollide()
 
 void Game::clearEntity()
 {
-    controlList.remove_if([&](const IControlPtr control){return control->toDestroy();});
+    controlList.remove_if([&](const ControlPtr control){return control->toDestroy();});
     entityList.remove_if([&](const EntityPtr entity){return entity->getHp() == 0;});
 }
 
 void Game::spawn()
 {
-    EntityPtr enemy = make_shared<Enemy>();
+    wait += clock.restart().asSeconds() * TimeFactor::get();
+    if (wait >= spawnDelay) {
+        wait -= spawnDelay;
+        spawnDelay -= 0.01 * spawnDelay;
+        EntityPtr enemy = make_shared<Enemy>();
 
-    entityList.push_back(enemy);
-    controlList.push_back(make_shared<EnemyAIFire>(*this, *enemy, player->getEntity()));
+        entityList.push_back(enemy);
+        controlList.push_back(make_shared<EnemyAIFire>(*this, *enemy, player->getEntity()));
+    }
 }
 
 Vector2f Game::predictPosition(const Entity &entity, const float &time)
