@@ -6,7 +6,7 @@
 */
 
 #include <iostream> // tmp
-#include "PlayerControl.hpp"
+#include "Control/PlayerControl.hpp"
 //#include "SFML++/Vector2Algebra.hpp"
 #include "Input.hpp" // tmp
 

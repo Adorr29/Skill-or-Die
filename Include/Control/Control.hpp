@@ -8,19 +8,21 @@
 #pragma once
 
 #include <memory>
-#include "Entity/Entity.hpp" // ?
+#include "AControl.hpp"
+//#include "Entity/Entity.hpp" // ?
 #include "Game.hpp" // ?
 
-class Control
+class Control : public AControl
 {
 public:
     Control(Game &_game, Entity &_entity);
     virtual ~Control() = default;
-    const Entity &getEntity() const;
-    bool toDestroy() const;
+    //const Entity &getEntity() const;
     virtual void update() = 0;
 
 protected:
     Game &game;
-    Entity &entity;
+    //Entity &entity;
 };
+
+typedef shared_ptr<Control> ControlPtr;

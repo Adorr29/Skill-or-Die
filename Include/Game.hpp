@@ -13,25 +13,13 @@ class Game;
 #include <memory> // tmp
 #include <SFML/Graphics.hpp>
 //#include <SFML/Audio.hpp> // tmp ?
-//#include "Control.hpp" // ??
-//#include "PlayerControl.hpp" // ?
+#include "Control/AControl.hpp" // ?
+#include "Entity/Entity.hpp" // ?
 
 using namespace std;
 using namespace sf;
 
 #define Framerate 60 // ?
-
-
-// ----- tmp -----
-class Entity;
-class Control;
-class PlayerControl;
-
-typedef shared_ptr<Entity> EntityPtr;
-typedef shared_ptr<Control> ControlPtr;
-typedef shared_ptr<PlayerControl> PlayerControlPtr;
-// ----- !tmp -----
-
 
 class Game
 {
@@ -39,7 +27,7 @@ public:
     Game();
     const RenderWindow &getWindow() const;
     void addEntity(EntityPtr entity);
-    void addControl(ControlPtr control);
+    void addControl(AControlPtr control);
     void run();
 
 private:
@@ -53,8 +41,8 @@ private:
 private:
     RenderWindow window;
     list<EntityPtr> entityList;
-    list<ControlPtr> controlList;
-    PlayerControlPtr player; // use PlayerControl
+    list<AControlPtr> controlList;
+    AControlPtr playerControl;
 
 private:
     float wait; // tmp

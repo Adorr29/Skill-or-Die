@@ -9,7 +9,7 @@
 
 //#include <list>
 #include <SFML/Graphics.hpp> // ?
-#include "Control.hpp"
+#include "Control/Control.hpp"
 
 class EnemyAIFire : public Control
 {

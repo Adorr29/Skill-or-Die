@@ -9,12 +9,12 @@
 
 #include <memory>
 #include <SFML/Graphics.hpp>
-#include "Entity.hpp"
+#include "GameObject.hpp"
 
 using namespace std;
 using namespace sf;
 
-class Entity
+class Entity : public GameObject, public Drawable
 {
 public:
     virtual ~Entity() = default;
@@ -27,7 +27,8 @@ public:
     void takeDamage(const Uint32 &damage);
     void die();
     virtual void update();
-    void aff(RenderTarget &renderTarget) const;
+    void aff(RenderTarget &renderTarget) const; // TODO supr
+    void draw(RenderTarget &renderTarget, RenderStates states) const;
     bool collide(const Entity &_entity) const;
     void loadFromFile(const string &fileName);
     void saveToFile(const string &fileName) const;

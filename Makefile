@@ -11,20 +11,23 @@ CC		=	g++
 
 SRCDIR		=	Src/
 ETYDIR		=	$(SRCDIR)Entity/
+CTLDIR		=	$(SRCDIR)Control/
 EAIDIR		=	$(SRCDIR)EnemyAI/
 SFPDIR		=	$(SRCDIR)SFML++/
 INCDIR		=	Include/
 
 SRC		=	$(SRCDIR)Main.cpp \
 			$(SRCDIR)Game.cpp \
-			$(SRCDIR)Control.cpp \
-			$(SRCDIR)PlayerControl.cpp \
+			$(SRCDIR)GameObject.cpp \
 			$(SRCDIR)TimeFactor.cpp \
 			$(SRCDIR)Input.cpp \
 			$(SRCDIR)Error.cpp \
 			$(ETYDIR)Entity.cpp \
 			$(ETYDIR)Player.cpp \
 			$(ETYDIR)Enemy.cpp \
+			$(CTLDIR)AControl.cpp \
+			$(CTLDIR)Control.cpp \
+			$(CTLDIR)PlayerControl.cpp \
 			$(EAIDIR)EnemyAIFire.cpp \
 			$(SFPDIR)ConvexShapeIntersects.cpp \
 

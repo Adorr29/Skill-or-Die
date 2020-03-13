@@ -54,6 +54,7 @@ void Entity::takeDamage(const Uint32 &damage)
 void Entity::die()
 {
     hp = 0;
+    destroy();
 }
 
 void Entity::update()
@@ -64,6 +65,11 @@ void Entity::update()
 void Entity::aff(RenderTarget &renderTarget) const
 {
     renderTarget.draw(convexShape);
+}
+
+void Entity::draw(RenderTarget &renderTarget, RenderStates states) const
+{
+    renderTarget.draw(convexShape, states);
 }
 
 bool Entity::collide(const Entity &_entity) const

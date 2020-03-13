@@ -11,7 +11,7 @@
 #include "TimeFactor.hpp" // move in hpp ?
 #include "Entity/Player.hpp" // tmp
 #include "Entity/Enemy.hpp" // tmp
-#include "PlayerControl.hpp" // tmp
+#include "Control/PlayerControl.hpp" // tmp
 #include "EnemyAI/EnemyAIFire.hpp" // tmp
 #include "SFML++/Vector2Algebra.hpp" // ?
 
@@ -28,9 +28,9 @@ Game::Game()
 
     // tmp
     PlayerPtr playerEntity = make_shared<Player>();
-    player = make_shared<PlayerControl>(*this, *playerEntity);
+    playerControl = make_shared<PlayerControl>(*this, *playerEntity);
     addEntity(playerEntity);
-    controlList.push_back(player);
+    controlList.push_back(playerControl);
 
     // tmp
     wait = -3.0;
@@ -47,7 +47,7 @@ void Game::addEntity(EntityPtr entity)
     entityList.push_back(entity);
 }
 
-void Game::addControl(ControlPtr control)
+void Game::addControl(AControlPtr control)
 {
     controlList.push_back(control);
 }
@@ -56,12 +56,6 @@ void Game::run()
 {
     while (window.isOpen()) {
         Input::update(window);
-        /*for (Event event; window.pollEvent(event);) {
-            if (event.type == Event::Closed)
-                window.close();
-            else if (player->parseEvent(event))
-                continue;
-                }*/
         spawn(); // tmp
         update();
         if (playerCollide())
@@ -69,7 +63,7 @@ void Game::run()
         window.clear();
         for (EntityPtr &entity : entityList) {
             entity->update();
-            entity->aff(window);
+            window.draw(*entity);
         }
         window.display();
         clearEntity();
@@ -78,14 +72,14 @@ void Game::run()
 
 void Game::update()
 {
-    for (ControlPtr &control : controlList)
+    for (AControlPtr &control : controlList)
         control->update();
     updateTimeFactor();
 }
 
 void Game::updateTimeFactor()
 {
-    const Entity &playerEntity = player->getEntity();
+    const Entity &playerEntity = playerControl->getEntity();
     float minDistance = -1;
     const float maxDistance = 120;
     const float time = Framerate / 8.0;
@@ -107,7 +101,7 @@ void Game::updateTimeFactor()
 
 bool Game::playerCollide()
 {
-    const Entity &playerEntity = player->getEntity();
+    const Entity &playerEntity = playerControl->getEntity();
 
     for (const EntityPtr entity : entityList)
         if (&playerEntity != &(*entity) && playerEntity.collide(*entity))
@@ -117,8 +111,8 @@ bool Game::playerCollide()
 
 void Game::clearEntity()
 {
-    controlList.remove_if([&](const ControlPtr control){return control->toDestroy();});
-    entityList.remove_if([&](const EntityPtr entity){return entity->getHp() == 0;});
+    controlList.remove_if([&](const AControlPtr control){return control->toDestroy();});
+    entityList.remove_if([&](const GameObjectPtr entity){return entity->toDestroy();});
 }
 
 void Game::spawn()
@@ -130,7 +124,7 @@ void Game::spawn()
         EntityPtr enemy = make_shared<Enemy>();
 
         entityList.push_back(enemy);
-        controlList.push_back(make_shared<EnemyAIFire>(*this, *enemy, player->getEntity()));
+        controlList.push_back(make_shared<EnemyAIFire>(*this, *enemy, playerControl->getEntity()));
     }
 }
 

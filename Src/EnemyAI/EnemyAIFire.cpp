@@ -29,8 +29,8 @@ EnemyAIFire::EnemyAIFire(Game &_game, Entity &_entity, const Entity &target)
 
 void EnemyAIFire::update()
 {
-    if (entity.getPosition().x < -70 || entity.getPosition().x > 900 + 70)
+    if (entity.getPosition().x < -70 || entity.getPosition().x > 900 + 70 || entity.getPosition().y < -70 || entity.getPosition().y > 900 + 70) {
         entity.die();
-    else if (entity.getPosition().y < -70 || entity.getPosition().y > 900 + 70)
-        entity.die();
+        destroy();
+    }
 }
